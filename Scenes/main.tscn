@@ -1,8 +1,67 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Entities/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/speedValue.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/turnRightZone.gd" type="Script" id=3]
+[ext_resource path="res://Scenes/Area2D.gd" type="Script" id=4]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 270, 960 )
 
 [node name="Node2D" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 231.721, 136.39 )
+motion/sync_to_physics = false
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Speed" type="Label" parent="CanvasLayer"]
+margin_right = 51.0
+margin_bottom = 14.0
+rect_scale = Vector2( 10, 10 )
+text = "Speed : "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="speedValue" type="Label" parent="CanvasLayer"]
+margin_left = 486.33
+margin_top = 1.25992
+margin_right = 502.33
+margin_bottom = 15.2599
+rect_scale = Vector2( 10, 10 )
+text = "10"
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="turnLeftZone" type="Area2D" parent="CanvasLayer"]
+position = Vector2( 270, 960 )
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/turnLeftZone"]
+shape = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="turnRightZone" type="Area2D" parent="CanvasLayer"]
+position = Vector2( 810, 960 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/turnRightZone"]
+shape = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[connection signal="input_event" from="CanvasLayer/turnLeftZone" to="Player" method="_on_turnLeftZone_input_event"]
+[connection signal="input_event" from="CanvasLayer/turnRightZone" to="Player" method="_on_turnRightZone_input_event"]
